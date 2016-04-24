@@ -1,0 +1,68 @@
+<html>
+    <style>
+        span {
+            border: thin;
+            border-color: blue;
+        }
+        
+        span #highscore {
+            border: solid;
+            border-color: red;
+        }
+    </style>
+    <body>
+        Name: <input id="name"></input> <br>
+        Score: <input id="score" type="number"></input><br>
+        <button onclick="submit();">Submit</button><br><br>
+        <span id="output"></span>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        var scores = [];
+        var output;
+        
+        function submit() {
+            if (scores.length < 10) {
+            
+            var name = $("#name");
+            var score = $("#score");
+            
+            var obj = {
+                fname: name.val(),
+                score: score.val()
+            };
+            console.log("Name: " + obj.fname + " Score: " + obj.score);
+            scores.push(obj);
+            
+            output = $("#output");
+            output.html(output.html() + "<br>" + name.val() + ": " + score.val());
+            
+            for (x = 0; x < scores.length-1; x++) {
+                if (parseInt(scores[x].score) > parseInt(scores[x+1].score)) {
+                    var scoreone = parseInt(scores[x].score);
+                    var scoretwo = parseInt(scores[x+1].score);
+                    
+                    scores[x].score = scoretwo;
+                    scores[x+1].score = scoreone;
+                    
+                    updateSpan();
+                }
+            }
+            
+            }else {
+                alert("Only up to ten high scores are available!");
+            }
+            for(z = scores.length-1; z > 0; z--){
+                var newname = scores[z].fname;   
+                output.html(output.html() + "<br>" + "Name: " + scores[z].fname + "   Score:" + scores[z].score);
+            }
+            console.log(scores);
+        }
+        
+        function updateSpan() {
+            output.html("");
+            
+        }
+        
+    </script>
+</html>
