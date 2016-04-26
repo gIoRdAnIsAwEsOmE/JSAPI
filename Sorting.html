@@ -5,9 +5,8 @@
             border-color: blue;
         }
         
-        span #highscore {
-            border: solid;
-            border-color: red;
+        .highscore {
+            color: red;
         }
     </style>
     <body>
@@ -19,7 +18,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
         var scores = [];
-        var output;
         
         function submit() {
             if (scores.length < 10) {
@@ -29,39 +27,37 @@
             
             var obj = {
                 fname: name.val(),
-                score: score.val()
+                score: parseInt(score.val())
             };
             console.log("Name: " + obj.fname + " Score: " + obj.score);
-            scores.push(obj);
-            
-            output = $("#output");
-            output.html(output.html() + "<br>" + name.val() + ": " + score.val());
+            scores.push(obj);  
+
+            var output = $("#output");
             
             for (x = 0; x < scores.length-1; x++) {
-                if (parseInt(scores[x].score) > parseInt(scores[x+1].score)) {
-                    var scoreone = parseInt(scores[x].score);
-                    var scoretwo = parseInt(scores[x+1].score);
+                if (scores[x].score > scores[x+1].score) {
+                    var scoreone = scores[x]
+                    var scoretwo = scores[x+1];
                     
-                    scores[x].score = scoretwo;
-                    scores[x+1].score = scoreone;
+
+                    scores[x] = scoretwo;
+                    scores[x+1] = scoreone;
                     
-                    updateSpan();
                 }
             }
             
             }else {
                 alert("Only up to ten high scores are available!");
             }
-            for(z = scores.length-1; z > 0; z--){
-                var newname = scores[z].fname;   
-                output.html(output.html() + "<br>" + "Name: " + scores[z].fname + "   Score:" + scores[z].score);
+
+            output.html("");
+            for(z = scores.length-1; z >= 0; z--){
+                output.html(output.html() + "<br><div id=score" + z + ">" + "Name: " + scores[z].fname + "   Score:" + scores[z].score + "</div>");
+                if(z == scores.length-1 || z == scores.length-2 || z == scores.length-3){
+                    $("#score" + z).addClass('highscore');
+                }
             }
             console.log(scores);
-        }
-        
-        function updateSpan() {
-            output.html("");
-            
         }
         
     </script>
