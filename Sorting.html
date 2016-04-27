@@ -33,16 +33,16 @@
             scores.push(obj);  
 
             var output = $("#output");
-            
-            for (x = 0; x < scores.length-1; x++) {
-                if (scores[x].score > scores[x+1].score) {
-                    var scoreone = scores[x]
-                    var scoretwo = scores[x+1];
-                    
+            for (y = 0; y < scores.length; y++){
+                for (x = 0; x < scores.length-1; x++) {
+                    if (scores[x].score > scores[x+1].score) {
+                        var scoreone = scores[x];
+                        var scoretwo = scores[x+1];
 
-                    scores[x] = scoretwo;
-                    scores[x+1] = scoreone;
-                    
+                        scores[x] = scoretwo;
+                        scores[x+1] = scoreone;
+                        
+                    }
                 }
             }
             
