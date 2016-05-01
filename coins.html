@@ -1,0 +1,28 @@
+<html>
+    <body>
+        <button onclick="getCoins()">Click Here</button>
+        <span id="output"></span>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        var coin = [["quarter", 0.25],["dime", 0.10],["penny", 0.01],["nickel", 0.05]];
+        //numberofcoins 0 - quarter, dime - 1, penny - 2, nickel - 3
+        function getCoins() {
+            var coins = 0;
+            var numberofcoins = [0,0,0,0];
+            for (coins; coins < 5; coins++) {
+                var r = Math.floor(Math.random() * 3);
+                var newcoin = coin[r][0];
+                console.log(newcoin);
+                numberofcoins[r]++;
+            }
+            var value = 0;
+            for (x=0;x<4;x++) {
+                value += numberofcoins[x] * coin[x][1];
+                $("#output").html($("#output").html() + "<br>" + coin[x][0] + ": " + numberofcoins[x]);
+            }
+            console.log(value);
+            $("#output").html($("#output").html() + "<br>" + "Value: " + value);
+        }
+    </script>
+</html>
