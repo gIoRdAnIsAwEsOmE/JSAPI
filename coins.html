@@ -34,20 +34,19 @@
             for (y = 0; y < listofcoins.length; y++){
                 for (x = 0; x < listofcoins.length-1; x++) {
                     if (parseFloat(listofcoins[x][1]) > parseFloat(listofcoins[x+1][1])) {
-                        var coinone = listofcoins[x][1];
-                        var cointwo = listofcoins[x+1][1];
+                        var coinone = listofcoins[x];
+                        var cointwo = listofcoins[x+1];
 
-                        listofcoins[x][1] = cointwo;
-                        listofcoins[x+1][1] = coinone;
-                        console.log(coinone + " and " + cointwo);
+                        listofcoins[x] = cointwo;
+                        listofcoins[x+1] = coinone;
                     }
                 }
             }
             var output = $("#output");
             output.html("");
             for(z = listofcoins.length-1; z >= 0; z--){
-                output.html(output.html() + "<div class='set' id="+ z +"></div>");
-                var newput = $("#" + z);
+                output.html(output.html() + "<div class='set' id=coinbase"+ z +"></div>");
+                var newput = $("#coinbase" + z);
                 for (a = 0; a <= 3; a++) {
                     newput.html(newput.html() + "<br>Number of " + coin[a][0] + ": " + listofcoins[z][0][a] + "</div><br>");
                 }
