@@ -1,28 +1,58 @@
 <html>
+    <style>
+        div {
+            color:blue;
+        }
+        .set {
+            border-color: red;
+            border: solid;
+        }
+    </style>
     <body>
         <button onclick="getCoins()">Click Here</button>
         <span id="output"></span>
     </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
         var coin = [["quarter", 0.25],["dime", 0.10],["penny", 0.01],["nickel", 0.05]];
+        var listofcoins = []; // [q,d,p,n, value]
         //numberofcoins 0 - quarter, dime - 1, penny - 2, nickel - 3
         function getCoins() {
             var coins = 0;
             var numberofcoins = [0,0,0,0];
             for (coins; coins < 5; coins++) {
-                var r = Math.floor(Math.random() * 3);
-                var newcoin = coin[r][0];
-                console.log(newcoin);
+                var r = Math.floor(Math.random() * 4);
                 numberofcoins[r]++;
             }
             var value = 0;
             for (x=0;x<4;x++) {
                 value += numberofcoins[x] * coin[x][1];
-                $("#output").html($("#output").html() + "<br>" + coin[x][0] + ": " + numberofcoins[x]);
             }
-            console.log(value);
-            $("#output").html($("#output").html() + "<br>" + "Value: " + value);
+            var arraycoin = [numberofcoins, parseFloat(value.toFixed(2))];
+            listofcoins.push(arraycoin);
+            
+            for (y = 0; y < listofcoins.length; y++){
+                for (x = 0; x < listofcoins.length-1; x++) {
+                    if (parseFloat(listofcoins[x][1]) > parseFloat(listofcoins[x+1][1])) {
+                        var coinone = listofcoins[x][1];
+                        var cointwo = listofcoins[x+1][1];
+
+                        listofcoins[x][1] = cointwo;
+                        listofcoins[x+1][1] = coinone;
+                        console.log(coinone + " and " + cointwo);
+                    }
+                }
+            }
+            var output = $("#output");
+            output.html("");
+            for(z = listofcoins.length-1; z >= 0; z--){
+                output.html(output.html() + "<div class='set' id="+ z +"></div>");
+                var newput = $("#" + z);
+                for (a = 0; a <= 3; a++) {
+                    newput.html(newput.html() + "<br>Number of " + coin[a][0] + ": " + listofcoins[z][0][a] + "</div><br>");
+                }
+                newput.html(newput.html() + "Value: " + listofcoins[z][1] + "<br>");
+            }
         }
     </script>
 </html>
