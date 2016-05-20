@@ -18,18 +18,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
         var scores = [];
+        var d = new Date();
+        var beforetime = d.getSeconds();
         
         function submit() {
+            d = new Date();
+            var aftertime = d.getSeconds();
+            console.log(aftertime);
+            console.log(beforetime);
             if (scores.length < 10) {
             
             var name = $("#name");
             var score = $("#score");
+            var time = aftertime - beforetime;
             
             var obj = {
                 fname: name.val(),
-                score: parseInt(score.val())
+                score: parseInt(score.val()),
+                time: time.toString()
             };
-            console.log("Name: " + obj.fname + " Score: " + obj.score);
+            console.log("Name: " + obj.fname + " Score: " + obj.score + " Time:" + obj.time);
             scores.push(obj);  
 
             var output = $("#output");
@@ -50,14 +58,28 @@
                 alert("Only up to ten high scores are available!");
             }
 
-            output.html("");
+            /*output.html("");
             for(z = scores.length-1; z >= 0; z--){
-                output.html(output.html() + "<br><div id=score" + z + ">" + "Name: " + scores[z].fname + "   Score:" + scores[z].score + "</div>");
+                output.html(output.html() + "<br><div id=score" + z + ">" + "Name: " + scores[z].fname + "   Score:" + scores[z].score +  " Time:" + scores[z].time + " seconds</div>");
                 if(z == scores.length-1 || z == scores.length-2 || z == scores.length-3){
                     $("#score" + z).addClass('highscore');
                 }
-            }
-            console.log(scores);
+            }*/
+            beforetime, aftertime = 0;
+            
+            $.ajax({
+                url: 'http://data.sparkfun.com/streams/n1mEx0aGN8t2nAgVoDMA',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    name: "hi",
+                    score: "200",
+                    time: "50"
+                },
+                success: function(data) {
+                    console.log('success: ' + data);
+                    }
+                });
         }
         
     </script>
