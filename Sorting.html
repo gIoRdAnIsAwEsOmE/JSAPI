@@ -68,7 +68,10 @@
             beforetime, aftertime = 0;
             
             $.ajax({
-                url: 'http://data.sparkfun.com/streams/n1mEx0aGN8t2nAgVoDMA',
+                url: 'http://data.sparkfun.com/input/streams/n1mEx0aGN8t2nAgVoDMA',
+                headers: {
+                  'Phant-Private-Key': 'MoVrWE2qJ5uz5N0GD1qN'  
+                },
                 method: 'POST',
                 dataType: 'json',
                 data: {
