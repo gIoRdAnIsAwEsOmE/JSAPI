@@ -18,6 +18,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
         
+        var newdata;
+        
         var scores = [];
         var d = new Date();
         var beforetime = d.getSeconds();
@@ -58,30 +60,33 @@
                         console.log("POST");
                         }
                     });
-                var newdata;
                 $.ajax({
-                    url: 'http://data.sparkfun.com/output/n1mEx0aGN8t2nAgVoDMA',
+                    url: 'http://data.sparkfun.com/output/n1mEx0aGN8t2nAgVoDMA.json',
                     method: 'GET',
                     datatype: 'json',
                     success: function(data){
                         console.log('Success: ' + data);
                         newdata = data;
+                        console.log("GET");
+                        console.log(newdata.length);
                         }
                     });
+                
+                console.log(newdata.length);
                 for(y = 0; y <= newdata.length; y++){
                     for(x = 0; x <= newdata.length-1; x++){
                             if (newdata[x].score < newdata[x+1].score) {
-                                var aone = newdata[x].score;
-                                var bone = newdata[x+1].score;
-                                aone = newdata[x+1].score;
-                                bone = newdata[x].score;
+                                var aone = newdata[x];
+                                var bone = newdata[x+1];
+                                aone = newdata[x+1];
+                                bone = newdata[x];
                             }
                     }
                 }
-                scores = newdata; //lazy variable
-                
             }
             beforetime, aftertime = 0;
+            
+            scores = newdata; //lazy variable
             
             output.html("");
             for(z = scores.length-1; z >= 0; z--){
