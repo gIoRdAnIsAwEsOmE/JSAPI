@@ -26,7 +26,7 @@
         function getUpdateSet() {
             var output = $("#output");
             $.ajax({
-                url: 'http://data.sparkfun.com/output/n1mEx0aGN8t2nAgVoDMA.json',
+                url: 'https://data.sparkfun.com/output/n1mEx0aGN8t2nAgVoDMA.json',
                 method: 'GET',
                 datatype: 'json',
                 async: false,
@@ -80,7 +80,7 @@
                     time: Math.abs(time).toString()
                 };
                 $.ajax({
-                    url: 'http://data.sparkfun.com/input/n1mEx0aGN8t2nAgVoDMA',
+                    url: 'https://data.sparkfun.com/input/n1mEx0aGN8t2nAgVoDMA',
                     headers: {
                         'Phant-Private-Key': 'MoVrWE2qJ5uz5N0GD1qN'
                     },
