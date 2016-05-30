@@ -36,7 +36,7 @@
                 var obj = {
                     fname: name.val(),
                     score: parseInt(score.val()),
-                    time: time.toString()
+                    time: Math.abs(time).toString()
                 };
                 var output = $("#output");
                 
@@ -70,15 +70,30 @@
                         }
                     });
                 
-                for(y = 0; y <= newdata.length; y++){
-                    for(x = 0; x <= newdata.length-1; x++){
-                        var aone = newdata[x];
-                        var bone = newdata[x+1];
-                        console.log(bone.score);
-                                if (aone.score > bone.score) {
-                                    aone = newdata[x+1];
-                                    bone = newdata[x];
-                                }
+                var newdata_lenght = newdata.length;
+                
+                for(y = 0; y <= newdata_lenght; y++){
+                    for(x = 0; x <= newdata_lenght - 1; x++){
+                        if (newdata[x+1] != null) {
+                           console.log("++++++++++++++++++++++++++++++++"); 
+                           var val1 = newdata[x].score;
+                           var val2 = newdata[x+1].score;
+                           console.log("val1: " + val1);
+                           console.log("val2: " + val2);
+                           console.log("Is val1 > val2: " + (val1 > val2) );
+                           
+                           console.log("++++++++++++++++++++++++++++++++"); 
+                            
+                            
+                            if (Number(newdata[x].score) > Number(newdata[x+1].score)) {
+                                var scoreone = newdata[x];
+                                var scoretwo = newdata[x+1];
+         
+                                newdata[x] = scoretwo;
+                                newdata[x+1] = scoreone;
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -87,7 +102,7 @@
             output.html("");
             for(z = newdata.length-1; z >= 0; z--){
                 output.html(output.html() + "<br><div id=score" + z + ">" + "Name: " + newdata[z].name + "   Score:" + newdata[z].score +  " Time:" + Math.abs(newdata[z].time) + " seconds</div>");
-                if(z >= scores.length-3){
+                if(z >= newdata.length-3){
                     $("#score" + z).addClass('highscore');
                 }
             }
