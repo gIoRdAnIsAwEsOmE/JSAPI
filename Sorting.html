@@ -17,33 +17,72 @@
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
-        
         var newdata;
-        
         var scores = [];
         var d = new Date();
         var beforetime = d.getSeconds();
+        getUpdateSet();
+        
+        function getUpdateSet() {
+            var output = $("#output");
+            $.ajax({
+                url: 'http://data.sparkfun.com/output/n1mEx0aGN8t2nAgVoDMA.json',
+                method: 'GET',
+                datatype: 'json',
+                async: false,
+                success: function(data) {
+                    console.log('Success: ' + data);
+                    newdata = data;
+                    console.log("GET");
+                }
+            });
+            var newdata_lenght = newdata.length;
+            for (y = 0; y <= newdata_lenght; y++) {
+                for (x = 0; x <= newdata_lenght - 1; x++) {
+                    if (newdata[x + 1] != null) {
+                        /*console.log("++++++++++++++++++++++++++++++++");
+                        var val1 = newdata[x].score;
+                        var val2 = newdata[x + 1].score;
+                        console.log("val1: " + val1);
+                        console.log("val2: " + val2);
+                        console.log("Is val1 > val2: " + (val1 > val2));
+                        console.log("++++++++++++++++++++++++++++++++");*/
+                        if (Number(newdata[x].score) > Number(newdata[x + 1].score)) {
+                            var scoreone = newdata[x];
+                            var scoretwo = newdata[x + 1];
+                            newdata[x] = scoretwo;
+                            newdata[x + 1] = scoreone;
+                        }
+                    }
+                }
+            }
+            output.html("");
+            for (z = newdata.length - 1; z >= 0; z--) {
+                output.html(output.html() + "<br><div id=score" + z + ">" +
+                    "Name: " + newdata[z].name + "   Score:" + newdata[z].score +
+                    " Time:" + Math.abs(newdata[z].time) + " seconds</div>");
+                if (z >= newdata.length - 3) {
+                    $("#score" + z).addClass('highscore');
+                }
+            }
+        }
         
         function submit() {
             d = new Date();
             var aftertime = d.getSeconds();
             if (scores.length < 10) {
-            
                 var name = $("#name");
                 var score = $("#score");
                 var time = aftertime - beforetime;
-            
                 var obj = {
                     fname: name.val(),
                     score: parseInt(score.val()),
                     time: Math.abs(time).toString()
                 };
-                var output = $("#output");
-                
                 $.ajax({
                     url: 'http://data.sparkfun.com/input/n1mEx0aGN8t2nAgVoDMA',
                     headers: {
-                      'Phant-Private-Key': 'MoVrWE2qJ5uz5N0GD1qN'  
+                        'Phant-Private-Key': 'MoVrWE2qJ5uz5N0GD1qN'
                     },
                     method: 'POST',
                     dataType: 'json',
@@ -51,62 +90,16 @@
                     data: {
                         name: obj.fname,
                         score: obj.score,
-                        time: obj.time 
+                        time: obj.time
                     },
                     success: function(data) {
                         console.log('success: ' + data);
                         console.log("POST");
-                        }
-                    });
-                $.ajax({
-                    url: 'http://data.sparkfun.com/output/n1mEx0aGN8t2nAgVoDMA.json',
-                    method: 'GET',
-                    datatype: 'json',
-                    async: false,
-                    success: function(data){
-                        console.log('Success: ' + data);
-                        newdata = data;
-                        console.log("GET");
-                        }
-                    });
-                
-                var newdata_lenght = newdata.length;
-                
-                for(y = 0; y <= newdata_lenght; y++){
-                    for(x = 0; x <= newdata_lenght - 1; x++){
-                        if (newdata[x+1] != null) {
-                           console.log("++++++++++++++++++++++++++++++++"); 
-                           var val1 = newdata[x].score;
-                           var val2 = newdata[x+1].score;
-                           console.log("val1: " + val1);
-                           console.log("val2: " + val2);
-                           console.log("Is val1 > val2: " + (val1 > val2) );
-                           
-                           console.log("++++++++++++++++++++++++++++++++"); 
-                            
-                            
-                            if (Number(newdata[x].score) > Number(newdata[x+1].score)) {
-                                var scoreone = newdata[x];
-                                var scoretwo = newdata[x+1];
-         
-                                newdata[x] = scoretwo;
-                                newdata[x+1] = scoreone;
-                            }
-                        }
-                        
                     }
-                }
+                });
+                getUpdateSet();
             }
             beforetime, aftertime = 0;
-            
-            output.html("");
-            for(z = newdata.length-1; z >= 0; z--){
-                output.html(output.html() + "<br><div id=score" + z + ">" + "Name: " + newdata[z].name + "   Score:" + newdata[z].score +  " Time:" + Math.abs(newdata[z].time) + " seconds</div>");
-                if(z >= newdata.length-3){
-                    $("#score" + z).addClass('highscore');
-                }
-            }
         }
-        
     </script>
 </html>
