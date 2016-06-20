@@ -17,23 +17,64 @@
   </head>
   <body>
     <div id="map"></div>
+  </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
+      
       var map;
+      var markers;
+      function customui(div, text, map, funct) {
+        var ui = document.createElement('div');
+        ui.style.backgroundColor = 'blue';
+        ui.style.border = '2px solid #red';
+        div.appendChild(ui);
+        
+        var sometext = document.createElement('text');
+        text.style.fontFamily = 'sans-serif';
+
+      }
       function initMap() {
         var pos = {lat: 40.715578799999996, lng: -73.88500099999999};
         map = new google.maps.Map(document.getElementById('map'), {
           center: pos,
           zoom: 10
-        });
+        }); 
+        
         var marker;
         map.addListener('click', function(e){
           marker = newmark(e.latLng, map);
           marker.setMap(map);
+          
+          marker.addListener('click', function(){
+            var latitude = this.position.lat();
+            var longitude = this.position.lng();
+            $.ajax({
+                url: 'http://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&APPID=0984e94cc675cb592d042777a0b6edc9',
+                method: 'GET',
+                datatype: 'json',
+                async: false,
+                success: function(data){
+                    console.log(data);
+                    console.log("done!");
+                    var temperture = data.main.temp;
+                    var celsius = parseInt(parseFloat(temperture - 273.15).toFixed(2));
+                    console.log("Temperture in Celsius: " + celsius);
+                    var fahrenheit = ((9 * celsius) / 5 ) + 32;
+                    console.log("In Fahrenheit: " + fahrenheit);
+                    var info = '<div>' +
+                                  '<p> Place: ' + data.name + '</p>' +
+                                  '<p> Temperture (F°): ' + fahrenheit + 
+                               '</div>';
+                    var infowindow = new google.maps.InfoWindow({
+                      content: info  
+                      });
+                    infowindow.open(map, marker);
+                  } 
+              });
+          });
         });
         
-        marker.addListener('click', function(){
-          
-          });
+        
         
       }
       
@@ -44,6 +85,12 @@
           animation: google.maps.Animation.DROP
         });
         return mark;
+      }
+      
+      function emptyMarkers() {
+        for (x = 0; x <= markers.size; x++) {
+            markers[x].setMap(null);
+        }
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxf5ZcHBEXO2_gqIQ_mUlc_lNG-uTPxE0&callback=initMap"
